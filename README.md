@@ -161,6 +161,28 @@ Load by category ID
 ></x-swiper-banners>
 ```
 
+## Custom Banner Item HTML
+
+Use `item` slot with `@scope()`, you will get `Banner` entity and index `$i`.
+
+Then kust build you own HTML.
+
+```html
+<x-swiper-banners :banners="$banners"
+>
+    <x-slot name="item">
+        @scope($banner, $i)
+        
+        <div class="c-banner-item"
+            style="background-image: url({{ $banner->getImage()) }})">
+            <h2>
+                {{ $banner->getTitle() }}
+            </h2>
+        </div>
+    </x-slot>
+</x-swiper-banners>
+```
+
 ## The Size Settings.
 
 Open `etc/packages/banner.php`, you will see:
