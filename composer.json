@@ -1,10 +1,8 @@
 {
     "name": "lyrasoft/banner",
     "description": "Luna Banner package",
-    "type": "luna-package",
-    "require": {
-        "lyrasoft/toolkit": "^1.0"
-    },
+    "type": "windwalker-package",
+    "require": {},
     "license": "MIT",
     "autoload": {
         "psr-4": {
