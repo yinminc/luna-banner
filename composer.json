@@ -1,0 +1,31 @@
+{
+    "name": "lyrasoft/banner",
+    "description": "Luna Banner package",
+    "type": "luna-package",
+    "require": {
+        "lyrasoft/toolkit": "^1.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Lyrasoft\\Banner\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Simon Asika",
+            "email": "asika32764@gmail.com"
+        }
+    ],
+    "minimum-stability": "beta",
+    "extra": {
+        "windwalker": {
+            "packages": [
+                "Lyrasoft\\Banner\\BannerPackage"
+            ],
+            "modules": [
+                "src/Module"
+            ]
+        }
+    }
+}
