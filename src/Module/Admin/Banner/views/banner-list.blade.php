@@ -167,7 +167,7 @@ $defaultImage = $imagePlaceholder->placeholder16to9();
                                         href="{{ $entity->getMobileImage() }}"
                                         target="_blank"
                                     >
-                                        <i class="fa fa-image"></i>
+                                        <i class="far fa-image"></i>
                                         Mobile
                                     </a>
                                 @endif
@@ -187,7 +187,7 @@ $defaultImage = $imagePlaceholder->placeholder16to9();
                                         href="{{ $entity->getMobileVideo() }}"
                                         target="_blank"
                                     >
-                                        <i class="far fa-video"></i>
+                                        <i class="fa fa-video"></i>
                                         Mobile
                                     </a>
                                 @endif
