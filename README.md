@@ -326,6 +326,23 @@ Then the banners in this category will use the new size:
 
 ![screenshot 2022-08-01 下午7 27 55](https://user-images.githubusercontent.com/1639206/182138449-2b157be9-1943-47ce-a679-62137f5fe1ac.jpg)
 
+## Create Default Categories/Type
+
+If you use Category mode, you may want to create some default categories in migration:
+
+```php
+$catMapper = $orm->mapper(Category::class);
+$catMapper->createOne(
+    [
+        'title' => '首頁作品',
+        'alias' => 'works',
+        'parent_id' => 1
+    ]
+);
+```
+
+If you use Type mode, just change the `BannerType` enum cases:
+
 ## BannerScript
 
 Directly use Swiper or Youtube Background
