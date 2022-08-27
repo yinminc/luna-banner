@@ -24,6 +24,7 @@ use Unicorn\Field\SingleImageDragField;
 use Unicorn\Field\SwitcherField;
 use Windwalker\Core\Language\TranslatorTrait;
 use Windwalker\Form\Field\HiddenField;
+use Windwalker\Form\Field\ListField;
 use Windwalker\Form\Field\TextareaField;
 use Windwalker\Form\Field\TextField;
 use Windwalker\Form\Field\UrlField;
@@ -40,7 +41,7 @@ class EditForm implements FieldDefinitionInterface
 
     public function __construct(
         protected BannerService $bannerService,
-        protected ?string $categoryAlias = null
+        protected ?string $type = null
     ) {
     }
 
@@ -76,7 +77,7 @@ class EditForm implements FieldDefinitionInterface
         $form->fieldset(
             'images',
             function (Form $form) {
-                $typeConfig = $this->bannerService->getTypeConfig($this->categoryAlias);
+                $typeConfig = $this->bannerService->getTypeConfig($this->type);
 
                 $form->add('image', SingleImageDragField::class)
                     ->label($this->trans('unicorn.field.image'))
@@ -121,9 +122,17 @@ class EditForm implements FieldDefinitionInterface
         $form->fieldset(
             'meta',
             function (Form $form) {
-                $form->add('category_id', CategoryListField::class)
-                    ->label($this->trans('banner.field.category'))
-                    ->categoryType('banner');
+                $typeEnum = $this->bannerService->getTypeEnum();
+
+                if ($typeEnum) {
+                    $form->add('type', ListField::class)
+                        ->label($this->trans('banner.field.type'))
+                        ->registerFromEnums($typeEnum);
+                } else {
+                    $form->add('category_id', CategoryListField::class)
+                        ->label($this->trans('banner.field.category'))
+                        ->categoryType('banner');
+                }
 
                 $form->add('state', SwitcherField::class)
                     ->label($this->trans('banner.field.published'))

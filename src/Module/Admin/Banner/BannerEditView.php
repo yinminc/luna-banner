@@ -14,6 +14,7 @@ namespace Lyrasoft\Banner\Module\Admin\Banner;
 use Lyrasoft\Banner\Entity\Banner;
 use Lyrasoft\Banner\Module\Admin\Banner\Form\EditForm;
 use Lyrasoft\Banner\Repository\BannerRepository;
+use Lyrasoft\Banner\Service\BannerService;
 use Lyrasoft\Luna\Entity\Category;
 use Windwalker\Core\Application\AppContext;
 use Windwalker\Core\Attributes\ViewModel;
@@ -40,6 +41,7 @@ class BannerEditView implements ViewModelInterface
         protected ORM $orm,
         protected FormFactory $formFactory,
         protected Navigator $nav,
+        protected BannerService $bannerService,
         #[Autowire] protected BannerRepository $repository
     ) {
     }
@@ -61,8 +63,14 @@ class BannerEditView implements ViewModelInterface
 
         $category = $this->orm->findOne(Category::class, $item?->getCategoryId());
 
+        if ($this->bannerService->getTypeEnum()) {
+            $type = $item->getType();
+        } else {
+            $type = $category?->getAlias();
+        }
+
         $form = $this->formFactory
-            ->create(EditForm::class, categoryAlias: $category?->getAlias())
+            ->create(EditForm::class, type: $type)
             ->setNamespace('item')
             ->fill(
                 $this->repository->getState()->getAndForget('edit.data')

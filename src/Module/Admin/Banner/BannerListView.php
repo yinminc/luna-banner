@@ -13,6 +13,7 @@ namespace Lyrasoft\Banner\Module\Admin\Banner;
 
 use Lyrasoft\Banner\Module\Admin\Banner\Form\GridForm;
 use Lyrasoft\Banner\Repository\BannerRepository;
+use Lyrasoft\Banner\Service\BannerService;
 use Windwalker\Core\Application\AppContext;
 use Windwalker\Core\Attributes\ViewModel;
 use Windwalker\Core\Form\FormFactory;
@@ -22,6 +23,7 @@ use Windwalker\Core\View\ViewModelInterface;
 use Windwalker\Data\Collection;
 use Windwalker\DI\Attributes\Autowire;
 use Windwalker\ORM\ORM;
+use Windwalker\Utilities\Cache\InstanceCacheTrait;
 
 /**
  * The BannerListView class.
@@ -36,12 +38,14 @@ use Windwalker\ORM\ORM;
 class BannerListView implements ViewModelInterface
 {
     use TranslatorTrait;
+    use InstanceCacheTrait;
 
     public function __construct(
         protected ORM $orm,
         #[Autowire]
         protected BannerRepository $repository,
-        protected FormFactory $formFactory
+        protected FormFactory $formFactory,
+        protected BannerService $bannerService,
     ) {
     }
 
@@ -99,6 +103,10 @@ class BannerListView implements ViewModelInterface
      */
     public function getDefaultOrdering(): string
     {
+        if ($this->getTypeEnum()) {
+            return 'banner.type, banner.ordering ASC';
+        }
+
         return 'banner.category_id, banner.ordering ASC';
     }
 
@@ -126,6 +134,10 @@ class BannerListView implements ViewModelInterface
      */
     public function reorderEnabled(string $ordering): bool
     {
+        if ($this->getTypeEnum()) {
+            return $ordering === 'banner.type, banner.ordering ASC';
+        }
+
         return $ordering === 'banner.category_id, banner.ordering ASC';
     }
 
@@ -161,5 +173,10 @@ class BannerListView implements ViewModelInterface
             ->setTitle(
                 $this->trans('unicorn.title.grid', title: $this->trans('luna.banner.title'))
             );
+    }
+
+    public function getTypeEnum(): ?string
+    {
+        return $this->cacheStorage['type.enum'] ??= $this->bannerService->getTypeEnum();
     }
 }

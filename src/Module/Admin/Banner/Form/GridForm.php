@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Lyrasoft\Banner\Module\Admin\Banner\Form;
 
+use Lyrasoft\Banner\Service\BannerService;
 use Lyrasoft\Luna\Field\CategoryListField;
 use Unicorn\Enum\BasicState;
 use Windwalker\Core\Language\TranslatorTrait;
@@ -25,6 +26,11 @@ use Windwalker\Form\Form;
 class GridForm implements FieldDefinitionInterface
 {
     use TranslatorTrait;
+
+    public function __construct(
+        protected BannerService $bannerService
+    ) {
+    }
 
     /**
      * Define the form fields.
@@ -54,11 +60,18 @@ class GridForm implements FieldDefinitionInterface
                     ->registerOptions(BasicState::getTransItems($this->lang))
                     ->onchange('this.form.submit()');
 
-                $form->add('banner.category_id', CategoryListField::class)
-                    ->label($this->trans('unicorn.field.state'))
-                    ->option($this->trans('unicorn.select.placeholder'), '')
-                    ->categoryType('banner')
-                    ->onchange('this.form.submit()');
+                if ($enum = $this->bannerService->getTypeEnum()) {
+                    $form->add('banner.type', ListField::class)
+                        ->label($this->trans('banner.field.type'))
+                        ->registerFromEnums($enum)
+                        ->onchange('this.form.submit()');
+                } else {
+                    $form->add('banner.category_id', CategoryListField::class)
+                        ->label($this->trans('banner.field.category'))
+                        ->option($this->trans('unicorn.select.placeholder'), '')
+                        ->categoryType('banner')
+                        ->onchange('this.form.submit()');
+                }
             }
         );
 

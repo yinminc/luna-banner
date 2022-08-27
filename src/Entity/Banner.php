@@ -44,6 +44,9 @@ class Banner implements EntityInterface
     #[Column('category_id')]
     protected int $categoryId = 0;
 
+    #[Column('type')]
+    protected string $type = '';
+
     #[Column('title')]
     protected string $title = '';
 
@@ -335,6 +338,26 @@ class Banner implements EntityInterface
     public function setParams(array $params): static
     {
         $this->params = $params;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return  static  Return self to support chaining.
+     */
+    public function setType(string $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }

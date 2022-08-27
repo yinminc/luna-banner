@@ -14,6 +14,7 @@ namespace Lyrasoft\Banner\Repository;
 use Lyrasoft\Banner\Entity\Banner;
 use Lyrasoft\Luna\Entity\Category;
 use Lyrasoft\Luna\Locale\LocaleAwareTrait;
+use MyCLabs\Enum\Enum;
 use Unicorn\Attributes\ConfigureAction;
 use Unicorn\Attributes\Repository;
 use Unicorn\Repository\Actions\BatchAction;
@@ -53,7 +54,6 @@ class BannerRepository implements ManageRepositoryInterface, ListRepositoryInter
         $selector->from(Banner::class)
             ->leftJoin(Category::class, 'category', 'category.id', 'banner.category_id')
             ->where('banner.state', 1)
-            ->where('category.state', 1)
             ->ordering('banner.ordering', 'ASC')
             ->limit(0)
             ->setDefaultItemClass(Banner::class);
@@ -68,6 +68,7 @@ class BannerRepository implements ManageRepositoryInterface, ListRepositoryInter
     public function getBannersByCategoryId(int $categoryId): ListSelector
     {
         $selector = $this->getFrontListSelector()
+            ->where('category.state', 1)
             ->where('banner.category_id', $categoryId);
 
         return $selector;
@@ -76,7 +77,16 @@ class BannerRepository implements ManageRepositoryInterface, ListRepositoryInter
     public function getBannersByCategoryAlias(string $categoryAlias): ListSelector
     {
         $selector = $this->getFrontListSelector()
+            ->where('category.state', 1)
             ->where('category.alias', $categoryAlias);
+
+        return $selector;
+    }
+
+    public function getBannersByType(string|\UnitEnum|Enum $type): ListSelector
+    {
+        $selector = $this->getFrontListSelector()
+            ->where('banner.type', $type);
 
         return $selector;
     }
@@ -93,6 +103,7 @@ class BannerRepository implements ManageRepositoryInterface, ListRepositoryInter
         $action->setReorderGroupHandler(
             function (Query $query, Banner $banner) {
                 $query->where('category_id', $banner->getCategoryId());
+                $query->where('type', $banner->getType());
             }
         );
     }

@@ -13,6 +13,7 @@ namespace Lyrasoft\Banner\Widget\Banner;
 
 use Lyrasoft\Banner\Entity\Banner;
 use Lyrasoft\Banner\Repository\BannerRepository;
+use Lyrasoft\Banner\Service\BannerService;
 use Lyrasoft\Luna\Field\CategoryListField;
 use Lyrasoft\Luna\Widget\AbstractWidget;
 use Unicorn\Field\ButtonRadioField;
@@ -42,7 +43,7 @@ class BannerWidget extends AbstractWidget implements ViewModelInterface
 {
     use TranslatorTrait;
 
-    public function __construct(protected Config $config)
+    public function __construct(protected Config $config, protected BannerService $bannerService)
     {
     }
 
@@ -76,14 +77,38 @@ class BannerWidget extends AbstractWidget implements ViewModelInterface
                     function (Form $form) {
                         $form->add('show_type', ButtonRadioField::class)
                             ->label($this->trans('banner.widget.field.show.type'))
-                            ->option($this->trans('banner.widget.field.show.type.option.category'), 'category')
-                            ->option($this->trans('banner.widget.field.show.type.option.files'), 'files')
-                            ->defaultValue('category');
+                            ->tap(
+                                function (ButtonRadioField $field) {
+                                    if ($this->bannerService->getTypeEnum()) {
+                                        $field->option(
+                                            $this->trans('banner.widget.field.show.type.option.type'),
+                                            'type'
+                                        );
+                                        $field->defaultValue('type');
+                                    } else {
+                                        $field->option(
+                                            $this->trans('banner.widget.field.show.type.option.category'),
+                                            'category'
+                                        );
+                                        $field->defaultValue('category');
+                                    }
+                                }
+                            )
+                            ->option($this->trans('banner.widget.field.show.type.option.files'), 'files');
 
-                        $form->add('category_id', CategoryListField::class)
-                            ->label($this->trans('banner.field.category'))
-                            ->categoryType('banner')
-                            ->set('showon', ['params/show_type' => 'category']);
+                        $typeEnum = $this->bannerService->getTypeEnum();
+
+                        if ($typeEnum) {
+                            $form->add('type', ListField::class)
+                                ->label($this->trans('banner.field.type'))
+                                ->registerFromEnums($typeEnum)
+                                ->set('showon', ['params/show_type' => 'type']);
+                        } else {
+                            $form->add('category_id', CategoryListField::class)
+                                ->label($this->trans('banner.field.category'))
+                                ->categoryType('banner')
+                                ->set('showon', ['params/show_type' => 'category']);
+                        }
 
                         $form->add('banners', MultiUploaderField::class)
                             ->label($this->trans('banner.widget.field.banners'))
@@ -262,7 +287,12 @@ class BannerWidget extends AbstractWidget implements ViewModelInterface
             }
         } else {
             $bannerRepo = $app->service(BannerRepository::class);
-            $banners    = $bannerRepo->getBannersByCategoryId((int) $params['category_id'])->all();
+
+            if ($this->bannerService->getTypeEnum()) {
+                $banners = $bannerRepo->getBannersByType((string) $params['type'])->all();
+            } else {
+                $banners = $bannerRepo->getBannersByCategoryId((int) $params['category_id'])->all();
+            }
         }
 
         $height = $params['height'] ?: null;

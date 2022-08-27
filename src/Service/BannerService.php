@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Lyrasoft\Banner\Service;
 
 use Windwalker\Core\Runtime\Config;
+use Windwalker\Utilities\Enum\EnumTranslatableInterface;
 
 /**
  * The BannerService class.
@@ -21,6 +22,14 @@ class BannerService
     public function __construct(
         protected Config $config
     ) {
+    }
+
+    /**
+     * @return  class-string<EnumTranslatableInterface>|null
+     */
+    public function getTypeEnum(): ?string
+    {
+        return $this->config->getDeep('banner.type_enum');
     }
 
     public function getTypeConfig(?string $type): array

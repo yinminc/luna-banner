@@ -17,13 +17,16 @@ declare(strict_types=1);
 use Lyrasoft\Banner\Module\Admin\Banner\BannerListView;use Windwalker\Core\Application\AppContext;use Windwalker\Core\Asset\AssetService;use Windwalker\Core\DateTime\ChronosService;use Windwalker\Core\Language\LangService;use Windwalker\Core\Router\Navigator;use Windwalker\Core\Router\SystemUri;
 
 /**
- * @var \App\Entity\Banner $entity
+ * @var \Lyrasoft\Banner\Entity\Banner $entity
  */
 
 $workflow = $app->service(\Unicorn\Workflow\BasicStateWorkflow::class);
 
 $imagePlaceholder = $app->service(\Unicorn\Image\ImagePlaceholder::class);
 $defaultImage = $imagePlaceholder->placeholder16to9();
+
+$bannerService = $app->service(\Lyrasoft\Banner\Service\BannerService::class);
+$typeEnum = $bannerService->getTypeEnum();
 ?>
 
 @extends('admin.global.body-list')
@@ -76,11 +79,17 @@ $defaultImage = $imagePlaceholder->placeholder16to9();
                         </x-sort>
                     </th>
 
-                    {{-- Category --}}
+                    {{-- Category | Type --}}
                     <th style="width: 15%" class="text-nowrap">
-                        <x-sort field="banner.category_id">
-                            @lang('banner.field.category')
-                        </x-sort>
+                        @if ($typeEnum)
+                            <x-sort field="banner.type">
+                                @lang('banner.field.type')
+                            </x-sort>
+                        @else
+                            <x-sort field="banner.category_id">
+                                @lang('banner.field.category')
+                            </x-sort>
+                        @endif
                     </th>
 
                     {{-- Ordering --}}
@@ -195,7 +204,11 @@ $defaultImage = $imagePlaceholder->placeholder16to9();
                         </td>
 
                         <td>
-                            {{ $item->category->title ?? '' }}
+                            @if ($typeEnum)
+                                {{ $typeEnum::wrap($entity->getType())->getTitle($lang) }}
+                            @else
+                                {{ $item->category->title ?? '' }}
+                            @endif
                         </td>
 
                         {{-- Ordering --}}

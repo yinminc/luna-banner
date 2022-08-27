@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace Lyrasoft\Banner\Enum;
 
-use App\Enum\T;
 use MyCLabs\Enum\Enum;
 use Windwalker\Utilities\Contract\LanguageInterface;
 use Windwalker\Utilities\Enum\EnumTranslatableInterface;

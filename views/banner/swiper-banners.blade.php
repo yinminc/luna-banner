@@ -69,7 +69,9 @@ if (!isset($banners)) {
 
     $repo = $app->service(BannerRepository::class);
 
-    if ($categoryAlias) {
+    if ($type) {
+        $banners = $repo->getBannersByType($type)->all();
+    } elseif ($categoryAlias) {
         $banners = $repo->getBannersByCategoryAlias($categoryAlias)->all();
     } elseif ($categoryId) {
         $banners = $repo->getBannersByCategoryId($categoryAlias)->all();
