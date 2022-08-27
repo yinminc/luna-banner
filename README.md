@@ -31,9 +31,64 @@ Then add this line to admin & front middleware:
 $this->lang->loadAllFromVendor('lyrasoft/banner', 'ini');
 ```
 
+## Use Type or Category
+
+You have 2 choice to structure banners, use `type` or `category`
+
+Type:
+
+![screenshot 2022-08-27 下午4 51 25](https://user-images.githubusercontent.com/1639206/187023024-762f6b4c-a6db-496e-9ac7-59f337448416.jpg)
+
+Category:
+
+![screenshot 2022-08-27 下午4 52 04](https://user-images.githubusercontent.com/1639206/187023025-33163b4b-140c-4290-a825-20dc0f0f2a06.jpg)
+
+The default will use `category` mode. If you want to use `type` mode,
+you must create a `BannerType` enum, for example:
+
+```php
+class BannerType extends Enum implements EnumTranslatableInterface
+{
+    use EnumTranslatableTrait;
+
+    #[Title('Home Banner')]
+    public const HOME = 'home';
+
+    #[Title('Works')]
+    public const WORKS = 'works';
+
+    // ...
+}
+```
+
+Then register enum class to config file:
+
+```php
+return [
+    'banner' => [
+        // ...
+        
+        'type_enum' => \App\Enum\BannerType::class,
+
+        // ...
+```
+
+The package will auto switch to `type` mode.
+
 ## Register Admin Menu
 
 Edit `resources/menu/admin/sidemenu.menu.php`
+
+Ues Type mode:
+
+```php
+// Banner
+$menu->link('橫幅管理')
+    ->to($nav->to('banner_list'))
+    ->icon('fal fa-gallery-thumbnails');
+```
+
+Use Category mode:
 
 ```php
 // Category
@@ -102,9 +157,8 @@ Use `BannerRepository` to get banners
 $repo = $app->service(BannerRepository::class);
 
 /** @var Banner[] $banners */
+$banners = $repo->getBannersByType('home')->all();
 $banners = $repo->getBannersByCategoryAlias('category-alias')->all();
-
-// Or get By ID
 $banners = $repo->getBannersByCategoryId(5)->all();
 ```
 
@@ -133,13 +187,23 @@ You can add some params:
 | banners        | `Banner[]`        | null     | The banner items, must be a iterable with `Banner` entity.                                       |
 | category-alias | `?string`         | null     | If not provides banner items, component will find banners by this condition.                     |
 | category-id    | `string` or `int` | null     | If not provides banner items, component will find banners by this condition.                     |                                                                              |
-| type           | `string`          | _default | Use this type name to find size & ratio settings.                                                |
+| type           | `string`          | _default | If not provides banner items, use this type name to find banners & size & ratio settings.        |
 | link-target    | `string`          | null     | The link target, can be `_blank`                                                                 |
 | height         | `string`          | null     | Force banner height, ignore ratio settings.                                                      |
 | ratio          | `float`           | null     | The widrth / height ratio. for example: 16:9 is `1.7778`. Leave empty yto let component calc it. |
-| options        | `array`            | []       | The options for `Swiper`                                                                           |
+| options        | `array`            | []       | The options for `Swiper`                                                                         |
 
 ### Examples
+
+Load by type
+
+```html
+<x-swiper-banners :type="$type"
+    link-target="_blank"
+    :pagination="true"
+    height="400px"
+></x-swiper-banners>
+```
 
 Load by category alias
 

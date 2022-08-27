@@ -9,8 +9,6 @@
 
 declare(strict_types=1);
 
-use Lyrasoft\Luna\Widget\Custom\CustomHtmlWidget;
-
 return [
     'banner' => [
         'providers' => [
@@ -19,6 +17,7 @@ return [
         'widget' => [
             'upload_profile' => 'image'
         ],
+        'type_enum' => null,
         'types' => [
             '_default' => [
                 'desktop' => [
