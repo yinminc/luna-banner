@@ -61,35 +61,43 @@ use Windwalker\Form\Form;
             </div>
         </div>
 
-        <x-card name="images" :title="$lang('banner.fieldset.images')"
-            class="mb-4"
-        >
-            <div class="row row-cols-2">
-                <x-field :field="$form['image']" class="mb-4"></x-field>
-                <x-field :field="$form['mobile_image']" class="mb-4"></x-field>
-            </div>
-        </x-card>
-
-        <x-card :title="$lang('banner.fieldset.video')">
-            <x-field :field="$form['video_type']" class="mb-4">
-
-            </x-field>
-
-            <div class="row row-cols-2">
-                <div class="">
-                    <x-field :field="$form['video']" class="mb-4"></x-field>
-                    <x-field :field="$form['video_upload']" class="mb-4"></x-field>
-
-                    <x-video-preview :field="$form['video']" :item="$item" class="c-preview-desktop"></x-video-preview>
+        @if ($item)
+            <x-card name="images" :title="$lang('banner.fieldset.images')"
+                class="mb-4"
+            >
+                <div class="row row-cols-2">
+                    <x-field :field="$form['image']" class="mb-4"></x-field>
+                    <x-field :field="$form['mobile_image']" class="mb-4"></x-field>
                 </div>
-                <div class="">
-                    <x-field :field="$form['mobile_video']" class="mb-4"></x-field>
-                    <x-field :field="$form['mobile_video_upload']" class="mb-4"></x-field>
+            </x-card>
 
-                    <x-video-preview :field="$form['mobile_video']" :item="$item" class="c-preview-mobile"></x-video-preview>
+            <x-card :title="$lang('banner.fieldset.video')">
+                <x-field :field="$form['video_type']" class="mb-4">
+
+                </x-field>
+
+                <div class="row row-cols-2">
+                    <div class="">
+                        <x-field :field="$form['video']" class="mb-4"></x-field>
+                        <x-field :field="$form['video_upload']" class="mb-4"></x-field>
+
+                        <x-video-preview :field="$form['video']" :item="$item" class="c-preview-desktop"></x-video-preview>
+                    </div>
+                    <div class="">
+                        <x-field :field="$form['mobile_video']" class="mb-4"></x-field>
+                        <x-field :field="$form['mobile_video_upload']" class="mb-4"></x-field>
+
+                        <x-video-preview :field="$form['mobile_video']" :item="$item" class="c-preview-mobile"></x-video-preview>
+                    </div>
                 </div>
-            </div>
-        </x-card>
+            </x-card>
+        @else
+            <x-card class="text-muted text-center py-5">
+                <div class="fs-5">
+                    @lang('banner.message.save.first')
+                </div>
+            </x-card>
+        @endif
 
         <div class="d-none">
             @if ($idField = $form?->getField('id'))
