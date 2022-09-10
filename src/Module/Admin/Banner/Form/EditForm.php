@@ -103,8 +103,9 @@ class EditForm implements FieldDefinitionInterface
 
         if ($this->config->getDeep('banner.video_enabled') ?? true) {
             $form->add('video_type', ButtonRadioField::class)
-                ->label($this->trans('banner.field.video_type'))
-                ->registerFromEnums(BannerVideoType::class, $this->lang);
+            ->label($this->trans('banner.field.video_type'))
+            ->registerFromEnums(BannerVideoType::class, $this->lang)
+            ->defaultValue(BannerVideoType::EMBED);
 
             $form->add('video', UrlField::class)
                 ->label($this->trans('banner.field.video'));
