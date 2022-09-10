@@ -25,9 +25,11 @@ use Windwalker\Core\Router\SystemUri;
 use Windwalker\Form\Form;
 
 /**
- * @var Form      $form
+ * @var Form   $form
  * @var Banner $item
  */
+
+$videoEnabled = $app->config('banner.video_enabled') ?? true;
 ?>
 
 @extends('admin.global.body-edit')
@@ -61,7 +63,7 @@ use Windwalker\Form\Form;
             </div>
         </div>
 
-        <x-card name="images" :title="$lang('banner.fieldset.images')"
+        <x-card name="images"
             class="mb-4"
         >
             <div class="row row-cols-2">
@@ -70,26 +72,28 @@ use Windwalker\Form\Form;
             </div>
         </x-card>
 
-        <x-card :title="$lang('banner.fieldset.video')">
-            <x-field :field="$form['video_type']" class="mb-4">
+        @if ($videoEnabled)
+            <x-card>
+                <x-field :field="$form['video_type']" class="mb-4">
 
-            </x-field>
+                </x-field>
 
-            <div class="row row-cols-2">
-                <div class="">
-                    <x-field :field="$form['video']" class="mb-4"></x-field>
-                    <x-field :field="$form['video_upload']" class="mb-4"></x-field>
+                <div class="row row-cols-2">
+                    <div class="">
+                        <x-field :field="$form['video']" class="mb-4"></x-field>
+                        <x-field :field="$form['video_upload']" class="mb-4"></x-field>
 
-                    <x-video-preview :field="$form['video']" :item="$item" class="c-preview-desktop"></x-video-preview>
+                        <x-video-preview :field="$form['video']" :item="$item" class="c-preview-desktop"></x-video-preview>
+                    </div>
+                    <div class="">
+                        <x-field :field="$form['mobile_video']" class="mb-4"></x-field>
+                        <x-field :field="$form['mobile_video_upload']" class="mb-4"></x-field>
+
+                        <x-video-preview :field="$form['mobile_video']" :item="$item" class="c-preview-mobile"></x-video-preview>
+                    </div>
                 </div>
-                <div class="">
-                    <x-field :field="$form['mobile_video']" class="mb-4"></x-field>
-                    <x-field :field="$form['mobile_video_upload']" class="mb-4"></x-field>
-
-                    <x-video-preview :field="$form['mobile_video']" :item="$item" class="c-preview-mobile"></x-video-preview>
-                </div>
-            </div>
-        </x-card>
+            </x-card>
+        @endif
 
         <div class="d-none">
             @if ($idField = $form?->getField('id'))

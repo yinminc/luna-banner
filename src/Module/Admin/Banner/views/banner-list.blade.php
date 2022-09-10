@@ -107,6 +107,14 @@ $typeEnum = $bannerService->getTypeEnum();
                         </div>
                     </th>
 
+                    @if ($vm->isLocaleEnabled())
+                        <th>
+                            <x-sort field="article.language">
+                                @lang('luna.field.language')
+                            </x-sort>
+                        </th>
+                    @endif
+
                     {{-- Delete --}}
                     <th style="width: 1%" class="text-nowrap">
                         @lang('unicorn.field.delete')
@@ -220,6 +228,14 @@ $typeEnum = $bannerService->getTypeEnum();
                                 :value="$item->ordering"
                             ></x-order-control>
                         </td>
+
+                        @if ($vm->isLocaleEnabled())
+                            <td>
+                                <x-lang-label
+                                    :item="$item"
+                                ></x-lang-label>
+                            </td>
+                        @endif
 
                         {{-- Delete --}}
                         <td class="text-center">

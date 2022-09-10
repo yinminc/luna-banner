@@ -23,6 +23,7 @@ use Unicorn\Field\FileDragField;
 use Unicorn\Field\SingleImageDragField;
 use Unicorn\Field\SwitcherField;
 use Windwalker\Core\Language\TranslatorTrait;
+use Windwalker\Core\Runtime\Config;
 use Windwalker\Form\Field\HiddenField;
 use Windwalker\Form\Field\ListField;
 use Windwalker\Form\Field\TextareaField;
@@ -40,6 +41,7 @@ class EditForm implements FieldDefinitionInterface
     use LocaleAwareTrait;
 
     public function __construct(
+        protected Config $config,
         protected BannerService $bannerService,
         protected ?string $type = null
     ) {
@@ -58,14 +60,14 @@ class EditForm implements FieldDefinitionInterface
             'basic',
             function (Form $form) {
                 $form->add('title', TextField::class)
-                    ->label('Title')
+                    ->label($this->trans('unicorn.field.title'))
                     ->addFilter('trim')
                     ->required(true);
 
                 $form->add('subtitle', TextField::class)
                     ->label($this->trans('banner.field.subtitle'));
 
-                $form->add('link', UrlField::class)
+                $form->add('link', TextField::class)
                     ->label($this->trans('banner.field.link'));
 
                 $form->add('description', TextareaField::class)
@@ -99,25 +101,27 @@ class EditForm implements FieldDefinitionInterface
             }
         );
 
-        $form->add('video_type', ButtonRadioField::class)
-            ->label($this->trans('banner.field.video_type'))
-            ->registerFromEnums(BannerVideoType::class, $this->lang);
+        if ($this->config->getDeep('banner.video_enabled') ?? true) {
+            $form->add('video_type', ButtonRadioField::class)
+                ->label($this->trans('banner.field.video_type'))
+                ->registerFromEnums(BannerVideoType::class, $this->lang);
 
-        $form->add('video', UrlField::class)
-            ->label($this->trans('banner.field.video'));
+            $form->add('video', UrlField::class)
+                ->label($this->trans('banner.field.video'));
 
-        $form->add('video_upload', FileDragField::class)
-            ->label($this->trans('banner.field.video.upload'))
-            ->set('showon', ['video_type' => 'file'])
-            ->accept('video/*');
+            $form->add('video_upload', FileDragField::class)
+                ->label($this->trans('banner.field.video.upload'))
+                ->set('showon', ['video_type' => 'file'])
+                ->accept('video/*');
 
-        $form->add('mobile_video', UrlField::class)
-            ->label($this->trans('banner.field.mobile_video'));
+            $form->add('mobile_video', UrlField::class)
+                ->label($this->trans('banner.field.mobile_video'));
 
-        $form->add('mobile_video_upload', FileDragField::class)
-            ->label($this->trans('banner.field.mobile_video.upload'))
-            ->set('showon', ['video_type' => 'file'])
-            ->accept('video/*');
+            $form->add('mobile_video_upload', FileDragField::class)
+                ->label($this->trans('banner.field.mobile_video.upload'))
+                ->set('showon', ['video_type' => 'file'])
+                ->accept('video/*');
+        }
 
         $form->fieldset(
             'meta',
@@ -142,7 +146,8 @@ class EditForm implements FieldDefinitionInterface
 
                 if ($this->isLocaleEnabled()) {
                     $form->add('language', LanguageListField::class)
-                        ->label($this->trans('banner.field.language'));
+                        ->label($this->trans('luna.field.language'))
+                        ->option($this->trans('luna.language.all'), '*');
                 }
 
                 $form->add('created', CalendarField::class)

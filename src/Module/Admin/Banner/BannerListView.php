@@ -14,6 +14,7 @@ namespace Lyrasoft\Banner\Module\Admin\Banner;
 use Lyrasoft\Banner\Module\Admin\Banner\Form\GridForm;
 use Lyrasoft\Banner\Repository\BannerRepository;
 use Lyrasoft\Banner\Service\BannerService;
+use Lyrasoft\Luna\Locale\LocaleAwareTrait;
 use Windwalker\Core\Application\AppContext;
 use Windwalker\Core\Attributes\ViewModel;
 use Windwalker\Core\Form\FormFactory;
@@ -39,6 +40,7 @@ class BannerListView implements ViewModelInterface
 {
     use TranslatorTrait;
     use InstanceCacheTrait;
+    use LocaleAwareTrait;
 
     public function __construct(
         protected ORM $orm,

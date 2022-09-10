@@ -18,6 +18,7 @@ return [
             'upload_profile' => 'image'
         ],
         'type_enum' => null,
+        'video_enabled' => true,
         'types' => [
             '_default' => [
                 'desktop' => [

@@ -13,6 +13,7 @@ namespace Lyrasoft\Banner\Repository;
 
 use Lyrasoft\Banner\Entity\Banner;
 use Lyrasoft\Luna\Entity\Category;
+use Lyrasoft\Luna\Entity\Language;
 use Lyrasoft\Luna\Locale\LocaleAwareTrait;
 use MyCLabs\Enum\Enum;
 use Unicorn\Attributes\ConfigureAction;
@@ -43,6 +44,10 @@ class BannerRepository implements ManageRepositoryInterface, ListRepositoryInter
 
         $selector->from(Banner::class)
             ->leftJoin(Category::class, 'category', 'category.id', 'banner.category_id');
+
+        if ($this->localeService->isEnabled()) {
+            $selector->leftJoin(Language::class, 'lang', 'lang.code', 'banner.language');
+        }
 
         return $selector;
     }
