@@ -25,9 +25,11 @@ use Windwalker\Core\Router\SystemUri;
 use Windwalker\Form\Form;
 
 /**
- * @var Form      $form
+ * @var Form   $form
  * @var Banner $item
  */
+
+$videoEnabled = $app->config('banner.video_enabled') ?? true;
 ?>
 
 @extends('admin.global.body-edit')
@@ -62,9 +64,7 @@ use Windwalker\Form\Form;
         </div>
 
         @if ($item)
-            <x-card name="images" :title="$lang('banner.fieldset.images')"
-                class="mb-4"
-            >
+            <x-card name="images" class="mb-4">
                 <div class="row row-cols-2">
                     <x-field :field="$form['image']" class="mb-4"></x-field>
                     <x-field :field="$form['mobile_image']" class="mb-4"></x-field>
@@ -72,7 +72,7 @@ use Windwalker\Form\Form;
             </x-card>
 
             @if ($videoEnabled)
-                <x-card :title="$lang('banner.fieldset.video')">
+                <x-card>
                     <x-field :field="$form['video_type']" class="mb-4">
 
                     </x-field>
