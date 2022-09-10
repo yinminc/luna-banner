@@ -72,7 +72,7 @@ class EditForm implements FieldDefinitionInterface
 
                 $form->add('description', TextareaField::class)
                     ->label($this->trans('unicorn.field.description'))
-                    ->rows(3);
+                    ->rows(5);
             }
         );
 
