@@ -56,7 +56,7 @@ class BannerController
 
                     $data['image'] = $uploader->handleFileIfUploaded(
                         $app->file('item')['image'] ?? null,
-                        'images/banner/' . md5((string) $data['id']) . '/image.{ext}',
+                        'images/banner/' . md5((string) $data['id']) . '-image-desktop.{ext}',
                             [
                                 'resize' => [
                                     'width' => $config['desktop']['width'] ?? 1080,
@@ -73,7 +73,7 @@ class BannerController
 
                     $data['mobile_image'] = $uploader->handleFileIfUploaded(
                         $app->file('item')['mobile_image'] ?? null,
-                        'images/banner/' . md5((string) $data['id']) . '/image-mobile.{ext}',
+                        'images/banner/' . md5((string) $data['id']) . '-image-mobile.{ext}',
                             [
                                 'resize' => [
                                     'width' => $config['mobile']['width'] ?? 1080,
@@ -89,13 +89,13 @@ class BannerController
 
                 $data['video'] = $uploader->handleFileIfUploaded(
                     $app->file('item')['video'] ?? null,
-                    'images/banner/' . md5((string) $data['id']) . '/video.{ext}',
+                    'images/banner/' . md5((string) $data['id']) . '-video-desktop.{ext}',
                 )
                     ?->getUri(true) ?? $data['video'];
 
                 $data['mobile_video'] = $uploader->handleFileIfUploaded(
                     $app->file('item')['mobile_video'] ?? null,
-                    'images/banner/' . md5((string) $data['id']) . '/video-mobile.{ext}',
+                    'images/banner/' . md5((string) $data['id']) . '-video-mobile.{ext}',
                 )
                     ?->getUri(true) ?? $data['mobile_video'];
 
