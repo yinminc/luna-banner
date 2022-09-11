@@ -96,8 +96,7 @@ $typeEnum = $bannerService->getTypeEnum();
                     <th style="width: 10%" class="text-nowrap">
                         <div class="d-flex w-100 justify-content-end">
                             <x-sort
-                                asc="banner.ordering ASC"
-                                desc="banner.ordering DESC"
+                                :field="$vm->getOrderingField()"
                             >
                                 @lang('unicorn.field.ordering')
                             </x-sort>

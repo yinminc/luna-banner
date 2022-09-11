@@ -98,6 +98,15 @@ class BannerListView implements ViewModelInterface
         return $this->repository->getEntityMapper()->toEntity($item);
     }
 
+    public function getOrderingField(): string
+    {
+        if ($this->getTypeEnum()) {
+            return 'banner.type, banner.ordering';
+        }
+
+        return 'banner.category_id, banner.ordering';
+    }
+
     /**
      * Get default ordering.
      *
