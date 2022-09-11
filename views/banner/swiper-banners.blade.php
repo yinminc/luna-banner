@@ -26,6 +26,7 @@ use Windwalker\Core\Language\LangService;
 use Windwalker\Core\Router\Navigator;
 use Windwalker\Core\Router\SystemUri;
 use Windwalker\Edge\Component\ComponentAttributes;
+
 use function Windwalker\uid;
 
 /**
@@ -45,22 +46,16 @@ $type ??= null;
 $ratio ??= null;
 
 if ($navigation) {
-    $options['navigation'] = [
-        'prevEl' => "#$id .swiper-button-prev",
-        'nextEl' => "#$id .swiper-button-next",
-    ];
+    $options['navigation']['prevEl'] = "#$id .swiper-button-prev";
+    $options['navigation']['nextEl'] = "#$id .swiper-button-next";
 }
 
 if ($pagination) {
-    $options['pagination'] = [
-        'el' => "#$id .swiper-pagination",
-    ];
+    $options['pagination']['el'] = "#$id .swiper-pagination";
 }
 
 if ($scrollbar) {
-    $options['scrollbar'] = [
-        'el' => "#$id .swiper-scrollbar",
-    ];
+    $options['scrollbar']['el'] = "#$id .swiper-scrollbar";
 }
 
 if (!isset($banners)) {
@@ -110,7 +105,7 @@ $app->service(BannerScript::class)->swiper('#' . $id, $options);
         @foreach ($banners as $i => $banner)
             <div class="swiper-slide">
                 @if ($item ?? null)
-                    {!! $item($banner, $i) !!}
+                    {!! $item(banner: $banner, i: $i) !!}
                 @else
                     <x-banner-item :banner="$banner"
                         :type="$type"
