@@ -16,6 +16,7 @@ use Lyrasoft\Banner\Module\Admin\Banner\Form\EditForm;
 use Lyrasoft\Banner\Repository\BannerRepository;
 use Lyrasoft\Banner\Service\BannerService;
 use Lyrasoft\Luna\Entity\Category;
+use Unicorn\Aws\S3Service;
 use Unicorn\Controller\CrudController;
 use Unicorn\Controller\GridController;
 use Unicorn\Upload\FileUploadManager;
@@ -53,16 +54,18 @@ class BannerController
 
                 if (!($config['desktop']['ajax'] ?? false)) {
                     $uploader = $fileUploadManager->get($config['desktop']['profile'] ?? 'image');
+                    $ext = $config['desktop']['image_ext'] ?? '{ext}';
 
                     $data['image'] = $uploader->handleFileIfUploaded(
                         $app->file('item')['image'] ?? null,
-                        'images/banner/' . md5((string) $data['id']) . '-image-desktop.{ext}',
+                        'images/banner/banner-' . md5((string) $data['id']) . '-image-desktop.' . $ext,
                             [
                                 'resize' => [
                                     'width' => $config['desktop']['width'] ?? 1080,
                                     'height' => $config['desktop']['width'] ?? 800,
                                     'crop' => $config['desktop']['crop'] ?? false,
-                                ]
+                                ],
+                                'ACL' => S3Service::ACL_PUBLIC_READ
                             ]
                     )
                         ?->getUri(true) ?? $data['image'];
@@ -70,16 +73,18 @@ class BannerController
 
                 if (!($config['mobile']['ajax'] ?? false)) {
                     $uploader = $fileUploadManager->get($config['mobile']['profile'] ?? 'image');
+                    $ext = $config['mobile']['image_ext'] ?? '{ext}';
 
                     $data['mobile_image'] = $uploader->handleFileIfUploaded(
                         $app->file('item')['mobile_image'] ?? null,
-                        'images/banner/' . md5((string) $data['id']) . '-image-mobile.{ext}',
+                        'images/banner/banner-' . md5((string) $data['id']) . '-image-mobile.' . $ext,
                             [
                                 'resize' => [
                                     'width' => $config['mobile']['width'] ?? 1080,
                                     'height' => $config['mobile']['width'] ?? 800,
                                     'crop' => $config['mobile']['crop'] ?? false,
-                                ]
+                                ],
+                                'ACL' => S3Service::ACL_PUBLIC_READ
                             ]
                     )
                         ?->getUri(true) ?? $data['mobile_image'];
@@ -89,13 +94,13 @@ class BannerController
 
                 $data['video'] = $uploader->handleFileIfUploaded(
                     $app->file('item')['video'] ?? null,
-                    'images/banner/' . md5((string) $data['id']) . '-video-desktop.{ext}',
+                    'images/banner/banner-' . md5((string) $data['id']) . '-video-desktop.{ext}',
                 )
                     ?->getUri(true) ?? $data['video'];
 
                 $data['mobile_video'] = $uploader->handleFileIfUploaded(
                     $app->file('item')['mobile_video'] ?? null,
-                    'images/banner/' . md5((string) $data['id']) . '-video-mobile.{ext}',
+                    'images/banner/banner-' . md5((string) $data['id']) . '-video-mobile.{ext}',
                 )
                     ?->getUri(true) ?? $data['mobile_video'];
 
