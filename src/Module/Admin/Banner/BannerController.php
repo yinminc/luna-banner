@@ -62,7 +62,7 @@ class BannerController
                             [
                                 'resize' => [
                                     'width' => $config['desktop']['width'] ?? 1080,
-                                    'height' => $config['desktop']['width'] ?? 800,
+                                    'height' => $config['desktop']['height'] ?? 800,
                                     'crop' => $config['desktop']['crop'] ?? false,
                                 ],
                                 'ACL' => S3Service::ACL_PUBLIC_READ
@@ -81,7 +81,7 @@ class BannerController
                             [
                                 'resize' => [
                                     'width' => $config['mobile']['width'] ?? 1080,
-                                    'height' => $config['mobile']['width'] ?? 800,
+                                    'height' => $config['mobile']['height'] ?? 800,
                                     'crop' => $config['mobile']['crop'] ?? false,
                                 ],
                                 'ACL' => S3Service::ACL_PUBLIC_READ
