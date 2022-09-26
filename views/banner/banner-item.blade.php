@@ -16,7 +16,7 @@ declare(strict_types=1);
  * @var $lang      LangService     The language translation service.
  */
 
-use App\Entity\Banner;
+use Lyrasoft\Banner\Entity\Banner;
 use Lyrasoft\Banner\Script\BannerScript;
 use Lyrasoft\Banner\Service\BannerService;
 use Windwalker\Core\Application\AppContext;
@@ -33,14 +33,16 @@ use Windwalker\Core\Router\SystemUri;
 
 $type = $type ?? $banner?->category?->alias ?? '_default';
 
-$app->service(BannerScript::class)->youtubeBackground();
 $bannerService = $app->service(BannerService::class);
+
+if ($banner->getVideo() || $banner->getMobileVideo()) {
+    $app->service(BannerScript::class)->youtubeBackground();
+}
 
 $height ??= null;
 $linkTarget ??= null;
 $desktopRatio = $bannerService->getImageRatio($type);
 $mobileRatio = $bannerService->getImageRatio($type, true);
-
 ?>
 <?php
 if ($height) {
