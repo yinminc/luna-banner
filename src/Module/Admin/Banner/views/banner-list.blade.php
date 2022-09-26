@@ -155,7 +155,7 @@ $typeEnum = $bannerService->getTypeEnum();
                             <a class="ratio ratio-16x9 d-block" style="object-fit: cover; width: 90px;"
                                 href="{{ $nav->to('banner_edit')->id($entity->getId()) }}">
                                 <img src="{{ $entity->getImage() ?: $entity->getMobileImage() }}" alt="image"
-                                    style="width: 100%; height: 100%;">
+                                    style="width: 100%; height: 100%; object-fit: cover;">
                             </a>
                         </td>
 
