@@ -15,7 +15,7 @@ return [
             \Lyrasoft\Banner\BannerPackage::class
         ],
         'widget' => [
-            'upload_profile' => 'default'
+            'upload_profile' => 'image'
         ],
         'type_enum' => null,
         'video_enabled' => true,
@@ -27,7 +27,7 @@ return [
                     'crop' => true,
                     'ajax' => false,
                     'image_ext' => 'jpg',
-                    'profile' => 'default',
+                    'profile' => 'image',
                 ],
                 'mobile' => [
                     'width' => 720,
@@ -35,7 +35,7 @@ return [
                     'crop' => true,
                     'ajax' => false,
                     'image_ext' => 'jpg',
-                    'profile' => 'default',
+                    'profile' => 'image',
                 ]
             ]
         ]
