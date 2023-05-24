@@ -150,7 +150,7 @@ if ($cover) {
         @endif
         @if ($banner->getDescription())
             <div class="l-swiper-banner-item__desc">
-                {{ $banner->getDescription() }}
+                {!! html_escape($banner->getDescription(), true) !!}
             </div>
         @endif
     </div>
