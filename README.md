@@ -182,16 +182,17 @@ You can add some params:
 
 ### Parameters
 
-| Param Name     | Type              | Default  | Description                                                                                      |
-|----------------|-------------------|----------|--------------------------------------------------------------------------------------------------|
-| banners        | `Banner[]`        | null     | The banner items, must be a iterable with `Banner` entity.                                       |
-| category-alias | `?string`         | null     | If not provides banner items, component will find banners by this condition.                     |
-| category-id    | `string` or `int` | null     | If not provides banner items, component will find banners by this condition.                     |                                                                              |
-| type           | `string`          | _default | If not provides banner items, use this type name to find banners & size & ratio settings.        |
-| link-target    | `string`          | null     | The link target, can be `_blank`                                                                 |
-| height         | `string`          | null     | Force banner height, ignore ratio settings.                                                      |
-| ratio          | `float`           | null     | The widrth / height ratio. for example: 16:9 is `1.7778`. Leave empty yto let component calc it. |
-| options        | `array`            | []       | The options for `Swiper`                                                                         |
+| Param Name     | Type              | Default  | Description                                                                                     |
+|----------------|-------------------|----------|-------------------------------------------------------------------------------------------------|
+| banners        | `Banner[]`        | null     | The banner items, must be a iterable with `Banner` entity.                                      |
+| category-alias | `?string`         | null     | If not provides banner items, component will find banners by this condition.                    |
+| category-id    | `string` or `int` | null     | If not provides banner items, component will find banners by this condition.                    |                                                                              |
+| type           | `string`          | _default | If not provides banner items, use this type name to find banners & size & ratio settings.       |
+| link-target    | `string`          | null     | The link target, can be `_blank`                                                                |
+| height         | `string`          | null     | Force banner height, ignore ratio settings.                                                     |
+| ratio          | `float`           | null     | The widrh / height ratio. for example: 16:9 is `1.7778`. Leave empty yto let component calc it. |
+| show-text      | `bool`            | false    | Show banner title / description or not.                                                         |
+| options        | `array`           | []       | The options for `Swiper`                                                                        |
 
 ### Examples
 
@@ -225,11 +226,11 @@ Load by category ID
 ></x-swiper-banners>
 ```
 
-## Custom Banner Item HTML
+## Banner Item Slot
 
 Use `item` slot with `@scope()`, you will get `Banner` entity and index `$i`.
 
-Then kust build you own HTML.
+Then just build you own HTML.
 
 ```html
 <x-swiper-banners :banners="$banners"
@@ -246,6 +247,36 @@ Then kust build you own HTML.
     </x-slot>
 </x-swiper-banners>
 ```
+
+### Use Banner Item Component
+
+Use can use `x-banner-item` component, it;s includes default RWD and video switch functions.
+
+```html
+<x-swiper-banners :banners="$banners"
+>
+    <x-slot name="item">
+        @scope($banner, $i)
+        
+        <x-banner-item :banner="$banner">
+            <h2>
+                {{ $banner->getTitle() }}
+            </h2>
+        </x-banner-item>
+    </x-slot>
+</x-swiper-banners>
+```
+
+Parameters:
+
+| Param Name    | Type            | Default  | Description                                                                                     |
+|---------------|-----------------|----------|-------------------------------------------------------------------------------------------------|
+| type          | `string`        | _default | Use this type name to find size & ratio settings.                                               |
+| banner        | `Banner`        | null     | The banner item, must be a `Banner` entity.                                                     |
+| link-target   | `string`        | null     | The link target, can be `_blank`                                                                |
+| height        | `string`        | null     | Force banner height, ignore ratio settings.                                                     |
+| ratio         | `float`         | null     | The widrh / height ratio. for example: 16:9 is `1.7778`. Leave empty yto let component calc it. |
+| show-text     | `bool`          | false    | Show banner title / description or not.                                                         |
 
 ## The Size Settings.
 

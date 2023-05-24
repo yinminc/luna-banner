@@ -39,12 +39,34 @@ if ($banner->getVideo() || $banner->getMobileVideo()) {
     $app->service(BannerScript::class)->youtubeBackground();
 }
 
+$props = $attributes->props(
+    'height',
+    'ratio',
+    'linkTarget',
+    'showText',
+    'type',
+    'banner',
+);
+
 $height ??= null;
 $linkTarget ??= null;
+$showText ??= false;
 $desktopRatio = $bannerService->getImageRatio($type);
 $mobileRatio = $bannerService->getImageRatio($type, true);
-?>
-<?php
+
+$attributes = $attributes->class('l-swiper-banner-item position-relative');
+
+if ($banner->getLink()) {
+    $attributes['href'] = $banner->getLink();
+}
+
+if ($linkTarget) {
+    $attributes['target'] = $linkTarget;
+}
+
+// ------------------------------------------
+
+// Desktop Banner
 if ($height) {
     $style = "height: $height;";
 } else {
@@ -57,10 +79,7 @@ if ($cover) {
     $style .= "background-image: url({$cover}); background-position: cover;";
 }
 ?>
-<a
-    @attr('href', $banner->getLink() ?: null)
-    @attr('target', $linkTarget)
->
+<a {!! $attributes !!}>
 {{-- Desktop --}}
 @if ($banner->getVideo())
     <div class="d-none d-md-block ratio"
@@ -96,14 +115,14 @@ if ($cover) {
 ?>
 
 @if ($banner->getMobileVideo())
-    <a class="d-block d-md-none"
+    <div class="d-block d-md-none"
         style="{{ $style }}"
     >
         <div data-vbg="{{ $banner->getMobileVideo() }}"
             data-vbg-mobile
             data-vbg-poster="{{ $cover }}"
         ></div>
-    </a>
+    </div>
 @elseif (!$banner->getVideo())
     <div class="d-block d-md-none ratio" style="{{ $style }}">
         <img class="img-fluid"
@@ -112,5 +131,26 @@ if ($cover) {
             alt="{{ $banner->getTitle() }}"
         >
     </div>
+@endif
+
+@if ($showText)
+    <div class="l-swiper-banner-item__text">
+        @if ($banner->getSubtitle())
+            <div class="l-swiper-banner-item__subtitle">
+                <h4>
+                    {{ $banner->getSubtitle() }}
+                </h4>
+            </div>
+        @endif
+        @if ($banner->getDescription())
+            <div class="l-swiper-banner-item__desc">
+                {{ $banner->getSubtitle() }}
+            </div>
+        @endif
+    </div>
+@endif
+
+@if ($slot ?? null)
+    {!! $slot($banner) !!}
 @endif
 </a>

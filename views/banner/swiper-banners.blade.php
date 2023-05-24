@@ -44,6 +44,7 @@ $height ??= '';
 $linkTarget ??= null;
 $type ??= null;
 $ratio ??= null;
+$showText ??= false;
 
 if ($navigation) {
     $options['navigation']['prevEl'] = "#$id .swiper-button-prev";
@@ -97,6 +98,8 @@ if ($height) {
     $attributes['style'] .= "height: $height";
 }
 
+$attributes = $attributes->class('l-swiper-banners');
+
 $app->service(BannerScript::class)->swiper('#' . $id, $options);
 ?>
 
@@ -111,6 +114,7 @@ $app->service(BannerScript::class)->swiper('#' . $id, $options);
                         :type="$type"
                         :height="$height"
                         :link-target="$linkTarget"
+                        :show-text="$showText"
                     ></x-banner-item>
                 @endif
             </div>
