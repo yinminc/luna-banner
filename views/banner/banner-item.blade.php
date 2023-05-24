@@ -31,6 +31,8 @@ use Windwalker\Core\Router\SystemUri;
  * @var ?string $type
  */
 
+$videoEnabled = $app->config('banner.video_enabled') ?? true;
+
 $type = $type ?? $banner?->category?->alias ?? '_default';
 
 $bannerService = $app->service(BannerService::class);
@@ -100,37 +102,41 @@ if ($cover) {
     </div>
 @endif
 
-<?php
-if ($height) {
-    $style = "height: $height;";
-} else {
-    $style = '--bs-aspect-ratio: ' . (100 / ($ratio ?? $mobileRatio)) . '%;';
-}
+@if ($videoEnabled)
+        <?php
 
-$cover = $banner->getMobileImage() ?: $banner->getImage();
 
-if ($cover) {
-    $style .= "background-image: url({$cover}); background-position: cover;";
-}
-?>
+        if ($height) {
+            $style = "height: $height;";
+        } else {
+            $style = '--bs-aspect-ratio: ' . (100 / ($ratio ?? $mobileRatio)) . '%;';
+        }
 
-@if ($banner->getMobileVideo())
-    <div class="d-block d-md-none"
-        style="{{ $style }}"
-    >
-        <div data-vbg="{{ $banner->getMobileVideo() }}"
-            data-vbg-mobile
-            data-vbg-poster="{{ $cover }}"
-        ></div>
-    </div>
-@elseif (!$banner->getVideo())
-    <div class="d-block d-md-none ratio" style="{{ $style }}">
-        <img class="img-fluid"
-            style="width: 100%; object-fit: cover"
-            src="{{ $cover }}"
-            alt="{{ $banner->getTitle() }}"
+        $cover = $banner->getMobileImage() ?: $banner->getImage();
+
+        if ($cover) {
+            $style .= "background-image: url({$cover}); background-position: cover;";
+        }
+        ?>
+
+    @if ($banner->getMobileVideo())
+        <div class="d-block d-md-none"
+            style="{{ $style }}"
         >
-    </div>
+            <div data-vbg="{{ $banner->getMobileVideo() }}"
+                data-vbg-mobile
+                data-vbg-poster="{{ $cover }}"
+            ></div>
+        </div>
+    @elseif (!$banner->getVideo())
+        <div class="d-block d-md-none ratio" style="{{ $style }}">
+            <img class="img-fluid"
+                style="width: 100%; object-fit: cover"
+                src="{{ $cover }}"
+                alt="{{ $banner->getTitle() }}"
+            >
+        </div>
+    @endif
 @endif
 
 @if ($showText)
@@ -144,7 +150,7 @@ if ($cover) {
         @endif
         @if ($banner->getDescription())
             <div class="l-swiper-banner-item__desc">
-                {{ $banner->getSubtitle() }}
+                {{ $banner->getDescription() }}
             </div>
         @endif
     </div>
