@@ -83,7 +83,7 @@ if ($cover) {
 ?>
 <a {!! $attributes !!}>
 {{-- Desktop --}}
-@if ($banner->getVideo())
+@if ($banner->getVideo() && $videoEnabled)
     <div class="d-none d-md-block ratio"
         style="{{ $style }}"
     >
@@ -102,41 +102,38 @@ if ($cover) {
     </div>
 @endif
 
-@if ($videoEnabled)
-        <?php
+{{-- Mobile --}}
+<?php
+if ($height) {
+    $style = "height: $height;";
+} else {
+    $style = '--bs-aspect-ratio: ' . (100 / ($ratio ?? $mobileRatio)) . '%;';
+}
 
+$cover = $banner->getMobileImage() ?: $banner->getImage();
 
-        if ($height) {
-            $style = "height: $height;";
-        } else {
-            $style = '--bs-aspect-ratio: ' . (100 / ($ratio ?? $mobileRatio)) . '%;';
-        }
+if ($cover) {
+    $style .= "background-image: url({$cover}); background-position: cover;";
+}
+?>
 
-        $cover = $banner->getMobileImage() ?: $banner->getImage();
-
-        if ($cover) {
-            $style .= "background-image: url({$cover}); background-position: cover;";
-        }
-        ?>
-
-    @if ($banner->getMobileVideo())
-        <div class="d-block d-md-none"
-            style="{{ $style }}"
+@if ($banner->getMobileVideo() && $videoEnabled)
+    <div class="d-block d-md-none ratio"
+        style="{{ $style }}"
+    >
+        <div data-vbg="{{ $banner->getMobileVideo() }}"
+            data-vbg-mobile
+            data-vbg-poster="{{ $cover }}"
+        ></div>
+    </div>
+@elseif (!$banner->getVideo() || !$videoEnabled)
+    <div class="d-block d-md-none ratio" style="{{ $style }}">
+        <img class="img-fluid"
+            style="width: 100%; object-fit: cover"
+            src="{{ $cover }}"
+            alt="{{ $banner->getTitle() }}"
         >
-            <div data-vbg="{{ $banner->getMobileVideo() }}"
-                data-vbg-mobile
-                data-vbg-poster="{{ $cover }}"
-            ></div>
-        </div>
-    @elseif (!$banner->getVideo())
-        <div class="d-block d-md-none ratio" style="{{ $style }}">
-            <img class="img-fluid"
-                style="width: 100%; object-fit: cover"
-                src="{{ $cover }}"
-                alt="{{ $banner->getTitle() }}"
-            >
-        </div>
-    @endif
+    </div>
 @endif
 
 @if ($showText)
