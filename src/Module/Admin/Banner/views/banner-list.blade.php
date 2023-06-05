@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Global variables
  * --------------------------------------------------------------
@@ -12,9 +14,15 @@
  * @var  $lang      LangService     The language translation service.
  */
 
-declare(strict_types=1);
+namespace App\View;
 
-use Lyrasoft\Banner\Module\Admin\Banner\BannerListView;use Windwalker\Core\Application\AppContext;use Windwalker\Core\Asset\AssetService;use Windwalker\Core\DateTime\ChronosService;use Windwalker\Core\Language\LangService;use Windwalker\Core\Router\Navigator;use Windwalker\Core\Router\SystemUri;
+use Lyrasoft\Banner\Module\Admin\Banner\BannerListView;
+use Windwalker\Core\Application\AppContext;
+use Windwalker\Core\Asset\AssetService;
+use Windwalker\Core\DateTime\ChronosService;
+use Windwalker\Core\Language\LangService;
+use Windwalker\Core\Router\Navigator;
+use Windwalker\Core\Router\SystemUri;
 
 /**
  * @var \Lyrasoft\Banner\Entity\Banner $entity
@@ -27,6 +35,8 @@ $defaultImage = $imagePlaceholder->placeholder16to9();
 
 $bannerService = $app->service(\Lyrasoft\Banner\Service\BannerService::class);
 $typeEnum = $bannerService->getTypeEnum();
+
+$videoEnabled = $app->config('banner.video_enabled') ?? true;
 ?>
 
 @extends('admin.global.body-list')
@@ -187,25 +197,27 @@ $typeEnum = $bannerService->getTypeEnum();
                                         Mobile
                                     </a>
                                 @endif
-                                @if ($entity->getVideo())
-                                    <a class="badge bg-danger has-tooltip"
-                                        title="@lang('banner.action.preview')"
-                                        href="{{ $entity->getVideo() }}"
-                                        target="_blank"
-                                    >
-                                        <i class="fa fa-video"></i>
-                                        Desktop
-                                    </a>
-                                @endif
-                                @if ($entity->getMobileVideo())
-                                    <a class="badge bg-danger has-tooltip"
-                                        title="@lang('banner.action.preview')"
-                                        href="{{ $entity->getMobileVideo() }}"
-                                        target="_blank"
-                                    >
-                                        <i class="fa fa-video"></i>
-                                        Mobile
-                                    </a>
+                                @if ($videoEnabled)
+                                    @if ($entity->getVideo())
+                                        <a class="badge bg-danger has-tooltip"
+                                            title="@lang('banner.action.preview')"
+                                            href="{{ $entity->getVideo() }}"
+                                            target="_blank"
+                                        >
+                                            <i class="fa fa-video"></i>
+                                            Desktop
+                                        </a>
+                                    @endif
+                                    @if ($entity->getMobileVideo())
+                                        <a class="badge bg-danger has-tooltip"
+                                            title="@lang('banner.action.preview')"
+                                            href="{{ $entity->getMobileVideo() }}"
+                                            target="_blank"
+                                        >
+                                            <i class="fa fa-video"></i>
+                                            Mobile
+                                        </a>
+                                    @endif
                                 @endif
                             </div>
                         </td>
