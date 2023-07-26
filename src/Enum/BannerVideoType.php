@@ -16,16 +16,32 @@ use Windwalker\Utilities\Contract\LanguageInterface;
 use Windwalker\Utilities\Enum\EnumTranslatableInterface;
 use Windwalker\Utilities\Enum\EnumTranslatableTrait;
 
-enum BannerVideoType: string implements EnumTranslatableInterface
+/**
+ * The BannerVideoType enum class.
+ *
+ * @method static $this EMBED()
+ * @method static $this FILE()
+ */
+class BannerVideoType extends Enum implements EnumTranslatableInterface
 {
     use EnumTranslatableTrait;
 
     public const EMBED = 'embed';
     public const FILE = 'file';
-    
-    public static function preprocessValue(mixed $value): mixed
+
+    /**
+     * Creates a new value of some type
+     *
+     * @psalm-pure
+     *
+     * @param  mixed  $value
+     *
+     * @psalm-param T $value
+     * @throws \UnexpectedValueException if incompatible type is given.
+     */
+    public function __construct(mixed $value)
     {
-        return $value ?: self::FILE;
+        parent::__construct($value ?: static::FILE);
     }
 
     public function trans(LanguageInterface $lang, ...$args): string

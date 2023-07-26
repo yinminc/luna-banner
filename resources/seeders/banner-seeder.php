@@ -67,7 +67,7 @@ $seeder->import(
                 $videoType = $faker->randomElement(BannerVideoType::values());
                 $item->setVideoType($videoType);
 
-                if ($videoType === BannerVideoType::EMBED) {
+                if ($videoType->equals(BannerVideoType::EMBED())) {
                     $item->setVideo('https://www.youtube.com/watch?v=jfKfPfyJRdk');
                     $item->setMobileVideo('https://www.youtube.com/watch?v=rUxyKA_-grg');
                 } else {
