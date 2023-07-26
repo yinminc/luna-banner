@@ -194,7 +194,7 @@ class Banner implements EntityInterface
 
     public function setVideoType(string|BannerVideoType $videoType): static
     {
-        $this->videoType = new BannerVideoType($videoType);
+        $this->videoType = BannerVideoType::wrap($videoType);
 
         return $this;
     }
