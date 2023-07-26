@@ -34,6 +34,7 @@ use Windwalker\ORM\Metadata\EntityMetadata;
  * The Banner class.
  */
 #[Table('banners', 'banner')]
+#[\AllowDynamicProperties]
 class Banner implements EntityInterface
 {
     use EntityTrait;
@@ -193,7 +194,7 @@ class Banner implements EntityInterface
 
     public function setVideoType(string|BannerVideoType $videoType): static
     {
-        $this->videoType = new BannerVideoType($videoType);
+        $this->videoType = $videoType;
 
         return $this;
     }
