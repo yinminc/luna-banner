@@ -4,7 +4,7 @@
     "type": "windwalker-package",
     "require": {
         "myclabs/php-enum": "^1.8",
-        "lyrasoft/luna": "^1.0"
+        "lyrasoft/luna": "^1.0||^2.0"
     },
     "license": "MIT",
     "autoload": {
