@@ -254,7 +254,7 @@ class Banner implements EntityInterface
 
     public function setState(int|BasicState $state): static
     {
-        $this->state = new BasicState($state);
+        $this->state = BasicState::wrap($state);
 
         return $this;
     }
