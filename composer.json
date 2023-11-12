@@ -2,7 +2,10 @@
     "name": "lyrasoft/banner",
     "description": "Luna Banner package",
     "type": "windwalker-package",
-    "require": {},
+    "require": {
+        "myclabs/php-enum": "^1.8",
+        "lyrasoft/luna": "^1.0"
+    },
     "license": "MIT",
     "autoload": {
         "psr-4": {
