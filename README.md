@@ -1,6 +1,6 @@
 # LYRASOFT Banner Package
 
-![screenshot 2022-08-01 下午6 59 04](https://user-images.githubusercontent.com/1639206/182134010-ec900d4c-b2fd-495f-bac0-d9034ce235c4.jpg)
+![screenshot](https://user-images.githubusercontent.com/1639206/182134010-ec900d4c-b2fd-495f-bac0-d9034ce235c4.jpg)
 
 ## Installation
 
@@ -28,7 +28,7 @@ If you don't want to copy language files, remove `-t lang` from install command.
 Then add this line to admin & front middleware:
 
 ```php
-$this->lang->loadAllFromVendor('lyrasoft/banner', 'ini');
+$this->lang->loadAllFromVendor(\Lyrasoft\Banner\BannerPackage::class, 'ini');
 ```
 
 ## Use Type or Category
@@ -120,34 +120,19 @@ return [
 
 ## Install `Swiper` and `youtube-background`
 
-If you needs use video & Youtbue, you must install `youtube-background`
+After packages installed, it will auto reauire `swiper` as node modules for root `package.json`.
+
+If you needs use video & Youtbue, you must manually install `youtube-background`
+
+```shell
+yarn add youtube-background
+```
 
 - Swiper:
   - Getting Started: https://swiperjs.com/get-started
   - Demo: https://swiperjs.com/demos
 - Youtbue Background
   - Github: https://github.com/stamat/youtube-background
-
-Add package to fusion.
-
-```js
-  installVendors(
-    [
-      // ...
-      'swiper',
-      'youtube-background',
-    ],
-    [
-      // ...
-    ]
-  );
-```
-
-Then install.
-
-```shell
-yarn add swiper youtube-background
-```
 
 ## Frontend Usage
 

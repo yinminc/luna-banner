@@ -50,7 +50,11 @@ class BannerController
                 $orm      = $event->getORM();
                 $category = $orm->findOne(Category::class, $entity->getCategoryId());
 
-                $config = $bannerService->getTypeConfig($category?->getAlias() ?? '_default');
+                $config = $bannerService->getTypeConfig(
+                    $category?->getAlias() ?? $data['type'] ?? '_default'
+                );
+
+                $config['mobile'] ??= $config['desktop'];
 
                 if (!($config['desktop']['ajax'] ?? false)) {
                     $uploader = $fileUploadManager->get($config['desktop']['profile'] ?? 'image');

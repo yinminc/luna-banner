@@ -26,7 +26,19 @@
             ],
             "modules": [
                 "src/Module"
-            ]
+            ],
+            "assets": {
+                "vendors": {
+                    "swiper": "^8.3.2"
+                },
+                "suggest": {
+                    "youtube-background": "^1.0.14"
+                },
+                "exposes": [
+                    "swiper",
+                    "youtube-background"
+                ]
+            }
         }
     }
 }
