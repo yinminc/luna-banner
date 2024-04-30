@@ -97,13 +97,13 @@ class BannerController
                 $uploader = $fileUploadManager->get('image');
 
                 $data['video'] = $uploader->handleFileIfUploaded(
-                    $app->file('item')['video'] ?? null,
+                    $app->file('item')['video_upload'] ?? null,
                     'images/banner/banner-' . md5((string) $data['id']) . '-video-desktop.{ext}',
                 )
                     ?->getUri(true) ?? $data['video'];
 
                 $data['mobile_video'] = $uploader->handleFileIfUploaded(
-                    $app->file('item')['mobile_video'] ?? null,
+                    $app->file('item')['mobile_video_upload'] ?? null,
                     'images/banner/banner-' . md5((string) $data['id']) . '-video-mobile.{ext}',
                 )
                     ?->getUri(true) ?? $data['mobile_video'];
