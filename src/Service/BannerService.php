@@ -55,4 +55,11 @@ class BannerService
 
         return round($width / $height, 6);
     }
+
+    public function isYtUrl(string $url): bool
+    {
+        $ytUrlPattern = '/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/[\w\-]+(\?.*)?$/';
+
+        return (bool) preg_match($ytUrlPattern, $url);
+    }
 }

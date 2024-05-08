@@ -78,7 +78,7 @@ if ($height) {
 $cover = $banner->getImage();
 
 if ($cover) {
-    $style .= "background-image: url({$cover}); background-position: cover;";
+    $style .= "background-image: url({$cover}); background-size: cover;";
 }
 ?>
 <a {!! $attributes !!}>
@@ -87,10 +87,19 @@ if ($cover) {
     <div class="d-none d-md-block ratio"
         style="{{ $style }}"
     >
-        <div data-vbg="{{ $banner->getVideo() }}"
-            data-vbg-mobile
-            data-vbg-poster="{{ $cover }}"
-        ></div>
+        @if($bannerService->isYtUrl($banner->getVideo()))
+            <div data-vbg="{{ $banner->getVideo() }}"
+                data-vbg-mobile
+                data-vbg-poster="{{ $cover }}"
+            ></div>
+        @else
+            <div class="w-100 h-100 position-absolute z-0 overflow-hidden bg-dark"
+                style="inset: 0; pointer-events: none;">
+                <video class="position-absolute opacity-100 w-100 h-100"
+                    style="top: 50%; left: 50%; transform: translate(-50%, -50%)"
+                    autoplay muted loop src="{{ $banner->getVideo() }}"></video>
+            </div>
+        @endif
     </div>
 @else
     <div class="ratio d-none d-md-block" style="{{ $style }}">
@@ -121,10 +130,19 @@ if ($cover) {
     <div class="d-block d-md-none ratio"
         style="{{ $style }}"
     >
-        <div data-vbg="{{ $banner->getMobileVideo() }}"
-            data-vbg-mobile
-            data-vbg-poster="{{ $cover }}"
-        ></div>
+        @if($bannerService->isYtUrl($banner->getVideo()))
+            <div data-vbg="{{ $banner->getMobileVideo() }}"
+                data-vbg-mobile
+                data-vbg-poster="{{ $cover }}"
+            ></div>
+        @else
+            <div class="w-100 h-100 position-absolute z-0 overflow-hidden bg-dark"
+                style="inset: 0; pointer-events: none;">
+                <video class="position-absolute opacity-100 w-100 h-100"
+                    style="top: 50%; left: 50%; transform: translate(-50%, -50%)"
+                    autoplay muted loop src="{{ $banner->getMobileVideo() }}"></video>
+            </div>
+        @endif
     </div>
 @elseif (!$banner->getVideo() || !$videoEnabled)
     <div class="d-block d-md-none ratio" style="{{ $style }}">
