@@ -11,7 +11,10 @@ declare(strict_types=1);
 
 namespace Lyrasoft\Banner\Service;
 
+use Windwalker\Core\Router\SystemUri;
 use Windwalker\Core\Runtime\Config;
+use Windwalker\Filesystem\Path;
+use Windwalker\Uri\Uri;
 use Windwalker\Utilities\Enum\EnumTranslatableInterface;
 
 /**
@@ -20,7 +23,8 @@ use Windwalker\Utilities\Enum\EnumTranslatableInterface;
 class BannerService
 {
     public function __construct(
-        protected Config $config
+        protected Config $config,
+        protected SystemUri $uri
     ) {
     }
 
@@ -54,5 +58,13 @@ class BannerService
         }
 
         return round($width / $height, 6);
+    }
+
+    public function handleVideoUrl(string $url)
+    {
+        $u = $this->uri->addUriBase($url, $this->uri->root);
+        $u = new Uri($u);
+        $ext = Path::getExtension($u->getPath());
+        return (string) $u->withVar('format', '.' . $ext);
     }
 }

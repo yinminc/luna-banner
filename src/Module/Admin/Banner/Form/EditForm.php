@@ -107,7 +107,7 @@ class EditForm implements FieldDefinitionInterface
             ->registerFromEnums(BannerVideoType::class, $this->lang)
             ->defaultValue(BannerVideoType::EMBED);
 
-            $form->add('video', UrlField::class)
+            $form->add('video', TextField::class)
                 ->label($this->trans('banner.field.video'));
 
             $form->add('video_upload', FileDragField::class)
@@ -115,7 +115,7 @@ class EditForm implements FieldDefinitionInterface
                 ->set('showon', ['video_type' => 'file'])
                 ->accept('video/*');
 
-            $form->add('mobile_video', UrlField::class)
+            $form->add('mobile_video', TextField::class)
                 ->label($this->trans('banner.field.mobile_video'));
 
             $form->add('mobile_video_upload', FileDragField::class)

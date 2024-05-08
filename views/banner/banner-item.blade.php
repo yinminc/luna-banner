@@ -80,6 +80,7 @@ $cover = $banner->getImage();
 if ($cover) {
     $style .= "background-image: url({$cover}); background-position: cover;";
 }
+
 ?>
 <a {!! $attributes !!}>
 {{-- Desktop --}}
@@ -87,7 +88,7 @@ if ($cover) {
     <div class="d-none d-md-block ratio"
         style="{{ $style }}"
     >
-        <div data-vbg="{{ $banner->getVideo() }}"
+        <div data-vbg="{{ $bannerService->handleVideoUrl($banner->getVideo()) }}"
             data-vbg-mobile
             data-vbg-poster="{{ $cover }}"
         ></div>
@@ -121,7 +122,7 @@ if ($cover) {
     <div class="d-block d-md-none ratio"
         style="{{ $style }}"
     >
-        <div data-vbg="{{ $banner->getMobileVideo() }}"
+        <div data-vbg="{{ $bannerService->handleVideoUrl($banner->getMobileVideo()) }}"
             data-vbg-mobile
             data-vbg-poster="{{ $cover }}"
         ></div>
