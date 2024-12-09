@@ -31,7 +31,7 @@ use Windwalker\Core\Router\SystemUri;
 
 <div {!! $attributes !!}>
     @if ($field->getValue())
-        @if ($item->getVideoType()->equals(\Lyrasoft\Banner\Enum\BannerVideoType::FILE()))
+        @if ($item->getVideoType() === \Lyrasoft\Banner\Enum\BannerVideoType::FILE)
             <div class="ratio ratio-16x9">
                 <video src="{{ $field->getValue() }}" style="width: 100%; height: 100%;" class=""
                     controls
